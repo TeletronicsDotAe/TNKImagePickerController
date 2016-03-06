@@ -722,7 +722,9 @@
     if ([_selectedAssets containsObject:asset]) {
         [self deselectAsset:asset];
     } else {
-        [self selectAsset:asset];
+        if (self.maxNumberOfSelectableImages == 0 || self.selectedAssets.count < self.maxNumberOfSelectableImages) {
+            [self selectAsset:asset];
+        }
     }
 }
 
@@ -839,8 +841,10 @@
 }
 
 - (void)assetsDetailViewController:(TNKAssetsDetailViewController *)viewController selectAssetAtIndexPath:(NSIndexPath *)indexPath {
-    PHAsset *asset = [self _assetAtIndexPath:indexPath];
-    [self selectAsset:asset];
+    if (self.maxNumberOfSelectableImages == 0 || self.selectedAssets.count < self.maxNumberOfSelectableImages) {
+        PHAsset *asset = [self _assetAtIndexPath:indexPath];
+        [self selectAsset:asset];
+    }
 }
 
 - (void)assetsDetailViewController:(TNKAssetsDetailViewController *)viewController deselectAssetAtIndexPath:(NSIndexPath *)indexPath {
