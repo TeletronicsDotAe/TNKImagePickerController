@@ -151,7 +151,7 @@
 	
 	if ([self.delegate respondsToSelector:@selector(imagePickerControllerTitleForDoneButton:)]) {
 		title = [self.delegate imagePickerControllerTitleForDoneButton:self];
-	} else if (_selectedAssets.count > 0) {
+	} else if (_selectedAssets.count > 0 && self.maxNumberOfSelectableImages != 1) {
 		title = [NSString localizedStringWithFormat:NSLocalizedString(@"Done (%d)", @"Title for photo picker done button (short)."), _selectedAssets.count];
 	} else {
 		title = NSLocalizedString(@"Done", nil);
@@ -716,6 +716,10 @@
         [self deselectAsset:asset];
     } else {
         if (self.maxNumberOfSelectableImages == 0 || self.selectedAssets.count < self.maxNumberOfSelectableImages) {
+            [self selectAsset:asset];
+        }
+        else if (self.maxNumberOfSelectableImages == 1) {
+            _selectedAssets = [NSMutableOrderedSet new];
             [self selectAsset:asset];
         }
     }
